@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "include": ["./electron-main.ts", "./electron-preloader.ts"],
+  "compilerOptions": {
+    "importHelpers": true,
+    "target": "ES2017",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types"],
+    "allowJs": true,
+    "rootDir": "."
+  }
+}
