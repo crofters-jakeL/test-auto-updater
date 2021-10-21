@@ -1,6 +1,6 @@
 {
   "name": "test-auto-updater",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Boilerplate for electron app with react.",
   "author": {

@@ -6,7 +6,7 @@ import { autoUpdater } from 'electron-updater';
 
 const loadURL = serve({directory: 'build'});
 
-let mainWindow;
+let mainWindow: any;
 
 async function createWindow () {
   mainWindow = new BrowserWindow({
@@ -21,7 +21,11 @@ async function createWindow () {
   } else {
     mainWindow.loadURL('http://localhost:3000')
   }
-  mainWindow.on('ready-to-show', () => {
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.autoDownload = false;
+    setTimeout(() => {
+      mainWindow.webContents.send('logger', {data: 'test data'});
+    }, 3000);
     autoUpdater.checkForUpdatesAndNotify();
   });
 }
@@ -62,3 +66,4 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.handle('restart_app', () => {
   autoUpdater.quitAndInstall();
 })
+

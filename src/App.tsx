@@ -30,11 +30,16 @@ function App() {
   useEffect(() => {
     getAppVersion();
     (window as any).myCustomAPI.isUpdateAvailable(() => {
+      console.log('Update Available');
       setIsUpdateAvailable(true);
     });
     (window as any).myCustomAPI.isUpdateDownloaded(() => {
+      console.log('Update Downloaded');
       setIsUpdateDownloaded(true);
       setIsUpdateAvailable(false);
+    });
+    (window as any).myCustomAPI.logger((data: any) => {
+      console.log(data);
     });
   }, []);
 
@@ -49,8 +54,7 @@ function App() {
           </div>
           <div>App Version: {appVersion}</div>
           <div>{isUpdateAvailable ? 'Update available and downloading...' : ''}</div>
-          {isUpdateDownloaded ? <div>Update downloaded <button onClick={updateApp}>Download</button></div> : ''}
-
+          {isUpdateDownloaded ? <div>Update downloaded <button onClick={updateApp} style={{border: '2px solid white'}}>Install</button></div> : ''}
         </div> : null}
       </header>
     </div>

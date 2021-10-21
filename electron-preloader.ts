@@ -6,5 +6,6 @@ contextBridge.exposeInMainWorld('myCustomAPI', {
   getAppVersion: async (): Promise<{error: any, data: any}> => ipcRenderer.invoke('app_version'),
   updateApp: async (): Promise<{error: any, data: any}> => ipcRenderer.invoke('restart_app'),
   isUpdateAvailable: async (listener: (_event: any, ...args: any[]) => void) => ipcRenderer.on('update_available', listener),
-  isUpdateDownloaded: async (listener: (_event: any, ...args: any[]) => void) => ipcRenderer.on('update_downloaded', listener)
+  isUpdateDownloaded: async (listener: (_event: any, ...args: any[]) => void) => ipcRenderer.on('update_downloaded', listener),
+  logger: async (listener: (_event: any, ...args: any[]) => void) => ipcRenderer.on('logger', listener)
 });
