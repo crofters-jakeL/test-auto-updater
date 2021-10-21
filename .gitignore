@@ -6,3 +6,4 @@ dist-ssr
 electron-main.js
 electron-preloader.js
 build/
+electron-builder.env

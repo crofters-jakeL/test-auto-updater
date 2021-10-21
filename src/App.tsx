@@ -1,19 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   const [ pingData, setPingData ] = useState('NO DATA');
+  const [ appVersion, setAppVersion ] = useState('');
+  const [ isUpdateAvailable, setIsUpdateAvailable ] = useState(false);
+  const [ isUpdateDownloaded, setIsUpdateDownloaded ] = useState(false);
 
   async function sendPingData() {
     const dataBack: string = await (window as any).myCustomAPI.sendIPCPing('My Test');
     setPingData(dataBack);
   }
 
+  async function getAppVersion() {
+    const dataBack: string = await (window as any).myCustomAPI.getAppVersion();
+    setAppVersion(dataBack);
+  }
+
+  async function updateApp() {
+    await (window as any).myCustomAPI.updateApp();
+  }
+
   function isElectron() {
     return (window as any).myCustomAPI !== undefined;
   }
+
+  useEffect(() => {
+    getAppVersion();
+    (window as any).myCustomAPI.isUpdateAvailable(() => {
+      setIsUpdateAvailable(true);
+    });
+    (window as any).myCustomAPI.isUpdateDownloaded(() => {
+      setIsUpdateDownloaded(true);
+      setIsUpdateAvailable(false);
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -24,6 +47,10 @@ function App() {
           <div className="text-white font-semibold mt-6">
             {pingData}
           </div>
+          <div>App Version: {appVersion}</div>
+          <div>{isUpdateAvailable ? 'Update available and downloading...' : ''}</div>
+          {isUpdateDownloaded ? <div>Update downloaded <button onClick={updateApp}>Download</button></div> : ''}
+
         </div> : null}
       </header>
     </div>

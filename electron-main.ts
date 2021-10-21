@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import isDev from 'electron-is-dev';
 import serve from 'electron-serve';
+import { autoUpdater } from 'electron-updater';
 
 const loadURL = serve({directory: 'build'});
 
@@ -20,6 +21,9 @@ async function createWindow () {
   } else {
     mainWindow.loadURL('http://localhost:3000')
   }
+  mainWindow.on('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
 }
 
 (async () => {
@@ -40,4 +44,21 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('ping', async (_event: any, data: string) => {
   return `ping back:: ${data}`;
+})
+
+ipcMain.handle('app_version', () => {
+  let ret = {error: null, data: null};
+  return ret.data = app.getVersion();
+});
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.handle('restart_app', () => {
+  autoUpdater.quitAndInstall();
 })

@@ -1,6 +1,6 @@
 {
-  "name": "cfl-electron-react-starter-typescript",
-  "version": "0.0.1",
+  "name": "test-auto-updater",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Boilerplate for electron app with react.",
   "author": {
@@ -15,11 +15,13 @@
     "build-electron": "tsc --project tsconfig.electron.json",
     "build": "npm run build-web && npm run build-electron",
     "pack-app": "npm run build && electron-builder --dir",
-    "dist-app": "npm run build && electron-builder"
+    "dist-app": "npm run build && electron-builder",
+    "deploy": "npm run build && electron-builder --publish always"
   },
   "dependencies": {
     "electron-is-dev": "^2.0.0",
     "electron-serve": "^1.1.0",
+    "electron-updater": "^4.3.9",
     "primeicons": "^4.1.0",
     "primereact": "^6.6.0",
     "react": "^17.0.2",
@@ -51,9 +53,20 @@
     "typescript": "^4.3.5",
     "vite": "^2.4.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crofters-jakeL/test-auto-updater.git"
+  },
   "build": {
-    "appId": "com.croftersorganic.electronreactboilerplate",
-    "productName": "CFL Electron Boilerplate App",
+    "appId": "com.croftersorganic.testautoupdater",
+    "productName": "Test Auto Updater",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "crofters-jakeL",
+        "repo": "test-auto-updater"
+      }
+    ],
     "asar": true,
     "files": [
       "!.eslintrc.js",
@@ -73,6 +86,12 @@
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": "pkg"
+    },
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "target": "nsis"
     }
   }
 }
